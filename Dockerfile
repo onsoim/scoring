@@ -11,15 +11,13 @@ RUN apt-get install -y \
     git \
     python3 \
     python3-pip \
-    vim \
-    zip
+    vim
 
 COPY . /home
 
 WORKDIR /home
 
-RUN pip3 install -r requirements.txt && \
-    virtualenv .venv
+RUN pip3 install -r requirements.txt
 
 RUN git config --global user.email onsoim@gmail.com && \
     git config --global user.name onsoim
