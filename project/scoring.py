@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import argparse
 
 
@@ -9,18 +10,27 @@ def scoring(args):
     answer = pd.read_csv(args.answer).drop_duplicates()
     l_correct, l_answer = len(correct), len(answer)
 
-    score = pd.concat([correct, answer])
-    print(score.duplicated(keep=False)[:l_correct])
+    score = pd.concat([correct, answer]).duplicated(keep=False)
 
-    # # correct && answer
-    # true_positive = 
+    # true positive == correct && answer
+    tp = pd.DataFrame(columns = ['source ip', 'destination ip', 'source port', 'destination port', 'attack type'])
 
-    # # !correct && answer
-    # false_positive = 
+    # false positive == !correct && answer
+    fp = pd.DataFrame(columns = ['source ip', 'destination ip', 'source port', 'destination port', 'attack type'])
 
-    # # correct && !answer
-    # false_negative = 
+    # false negative == correct && !answer
+    fn = pd.DataFrame(columns = ['source ip', 'destination ip', 'source port', 'destination port', 'attack type'])
 
+    for i in range(l_correct):
+        if score[:l_correct][i]: tp = tp.append(correct.loc[i], ignore_index=True)
+        else: fn = fn.append(correct.loc[i], ignore_index=True)
+
+    # for i in range(l_answer):
+    #     if not score[l_correct:][i]:
+    #         fp = fp.append(answer.loc[i], ignore_index=True)
+
+    return {'correct': len(tp), 'wrong': len(fn)}
+    
 
 def main():
     parser = argparse.ArgumentParser()
@@ -28,7 +38,7 @@ def main():
     parser.add_argument(dest="answer", help='User answer sheet')
     args = parser.parse_args()
 
-    scoring(args)
+    print(scoring(args))
 
 
 if __name__ == "__main__":
