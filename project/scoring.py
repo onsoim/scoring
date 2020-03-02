@@ -28,11 +28,12 @@ def scoring(args):
     # for i in range(len(student)):
     #     if not score[l_correct:][i]:
     #         fp = fp.append(student.loc[i], ignore_index=True)
+
     return {
         'id': int(args.student.split('_')[0]),
         'name': args.student.split('_')[1].split('.')[0],
         'grade': {
-            'score': 50,
+            'score': score[l_correct:].sum() * 10,
             'list': list(score[l_correct:]),
         },
     }
