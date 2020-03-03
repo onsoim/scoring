@@ -4,8 +4,8 @@ import argparse
 
 
 def scoring(args): 
-    correct = pd.read_excel(args.correct, skiprows = 2).drop(columns = ['번호', '취약사유', '개선방안']).dropna(how = 'all', axis = 'rows').dropna(how='all', axis='columns')
-    student = pd.read_excel(args.student, skiprows = 2).drop(columns = ['번호', '취약사유', '개선방안']).dropna(how = 'all', axis = 'rows').dropna(how='all', axis='columns')
+    correct = pd.read_excel(args.correct, skiprows = 2).drop(columns = ['번호', '취약사유', '개선방안']).dropna(how = 'all', axis = 'rows').dropna(how='all', axis='columns').apply(lambda x: x.astype(str).str.lower())
+    student = pd.read_excel(args.student, skiprows = 2).drop(columns = ['번호', '취약사유', '개선방안']).dropna(how = 'all', axis = 'rows').dropna(how='all', axis='columns').apply(lambda x: x.astype(str).str.lower())
     # correct = pd.read_csv(args.correct)
     # student = pd.read_csv(args.student).drop_duplicates()
 
