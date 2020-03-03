@@ -1,32 +1,5 @@
 import pandas as pd
-import numpy as np
 import argparse
-
-def _scoring(args): 
-    correct = pd.read_csv(args.correct)
-    answer = pd.read_csv(args.answer).drop_duplicates()
-    l_correct, l_answer = len(correct), len(answer)
-
-    score = pd.concat([correct, answer]).duplicated(keep=False)
-
-    # true positive == correct && answer
-    tp = pd.DataFrame(columns = ['source ip', 'destination ip', 'source port', 'destination port', 'attack type'])
-
-    # false positive == !correct && answer
-    fp = pd.DataFrame(columns = ['source ip', 'destination ip', 'source port', 'destination port', 'attack type'])
-
-    # false negative == correct && !answer
-    fn = pd.DataFrame(columns = ['source ip', 'destination ip', 'source port', 'destination port', 'attack type'])
-
-    for i in range(l_correct):
-        if score[:l_correct][i]: tp = tp.append(correct.loc[i], ignore_index=True)
-        else: fn = fn.append(correct.loc[i], ignore_index=True)
-
-    # for i in range(l_answer):
-    #     if not score[l_correct:][i]:
-    #         fp = fp.append(answer.loc[i], ignore_index=True)
-
-    return {'correct': len(tp), 'wrong': len(fn)}
 
 
 def scoring(args): 
@@ -41,7 +14,6 @@ def scoring(args):
         'name': args.student.split('_')[1].split('.')[0],
         'grade': {
             'score': score[l_correct:].sum() * 10,
-            'ans': [list(score[l_correct:])],
             'ans': [
                 {
                     'result': score[l_correct:][i],
